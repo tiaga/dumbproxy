@@ -67,5 +67,5 @@ jobs:
 #           build-args: 'GIT_DESC=${{ steps.tagger.outputs.tag }}'
       
       - run: echo "username/${{ github.event.repository.name }}:latest,${{ steps.imgtag.outputs.value }}"
-      - run: "echo test,${{ steps.imgtag.outputs.value != '' && format({0}-{1}, steps.imgtag.outputs.value,'-alpine') || '' }}"
+      - run: "echo test,${{ steps.imgtag.outputs.value != '' && format('{0}-{1}', steps.imgtag.outputs.value,'-alpine') || '' }}"
       
