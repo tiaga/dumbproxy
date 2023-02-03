@@ -36,38 +36,35 @@ jobs:
         id: imgtag
         with:
           cond: ${{ github.event_name == 'release' }}
-          if_true: ${{ secrets.DOCKERHUB_USERNAME }}/${{ github.event.repository.name }}:${{ github.event.release.tag_name }}
+          if_true: username/${{ github.event.repository.name }}:${{ github.event.release.tag_name }}
       -
         name: Set up QEMU
         uses: docker/setup-qemu-action@v2
       -
         name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
-      -
-        name: Login to DockerHub
-        uses: docker/login-action@v2 
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-      -
-        name: Build and push scratch image
-        id: docker_build_scratch
-        uses: docker/build-push-action@v4
-        with:
-          context: .
-          platforms: linux/amd64,linux/arm64,linux/386,linux/arm/v7
-          push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ github.event.repository.name }}:latest,${{ steps.imgtag.outputs.value }}
-          target: scratch
-          build-args: 'GIT_DESC=${{ steps.tagger.outputs.tag }}'
-      -
-        name: Build and push Alpine image
-        id: docker_build_alpine
-        uses: docker/build-push-action@v4
-        with:
-          context: .
-          platforms: linux/amd64,linux/arm64,linux/386,linux/arm/v7
-          push: true
-          tags: ${{ steps.imgtag.outputs.value }}-alpine,${{ steps.imgtag.outputs.value }}
-          target: alpine
-          build-args: 'GIT_DESC=${{ steps.tagger.outputs.tag }}'
+#       -
+#         name: Build and push scratch image
+#         id: docker_build_scratch
+#         uses: docker/build-push-action@v4
+#         with:
+#           context: .
+#           platforms: linux/amd64,linux/arm64,linux/386,linux/arm/v7
+#           push: false
+#           tags: username/${{ github.event.repository.name }}:latest,${{ steps.imgtag.outputs.value }}
+#           target: scratch
+#           build-args: 'GIT_DESC=${{ steps.tagger.outputs.tag }}'
+#       -
+#         name: Build and push Alpine image
+#         id: docker_build_alpine
+#         uses: docker/build-push-action@v4
+#         with:
+#           context: .
+#           platforms: linux/amd64,linux/arm64,linux/386,linux/arm/v7
+#           push: false
+#           tags: username/${{ github.event.repository.name }}:latest-alpine,${{ steps.imgtag.outputs.value != ',' && '${{steps.imgtag.outputs.value }}-alpine' }}
+#           target: alpine
+#           build-args: 'GIT_DESC=${{ steps.tagger.outputs.tag }}'
+      
+      - run: echo "username/${{ github.event.repository.name }}:latest,${{ steps.imgtag.outputs.value }}"
+      - run: echo username/${{ github.event.repository.name }}:latest-alpine,${{ steps.imgtag.outputs.value != ',' && '${{steps.imgtag.outputs.value }}-alpine' }
