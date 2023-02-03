@@ -10,7 +10,6 @@ on:
 
 env:
   DOCKER_BUILDKIT: 1
-  TEST: test,${{ steps.imgtag.outputs.value != '' && ${{ steps.imgtag.outputs.value }}-alpine || '' }}
 
 jobs:
   docker:
@@ -68,5 +67,5 @@ jobs:
 #           build-args: 'GIT_DESC=${{ steps.tagger.outputs.tag }}'
       
       - run: echo "username/${{ github.event.repository.name }}:latest,${{ steps.imgtag.outputs.value }}"
-      - run: echo ${{ env.TEST }}
+      - run: echo "test,${{ steps.imgtag.outputs.value != '' && ${{ steps.imgtag.outputs.value }}-alpine || '' }}"
       
