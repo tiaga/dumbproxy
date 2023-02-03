@@ -43,17 +43,17 @@ jobs:
       -
         name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
-#       -
-#         name: Build and push scratch image
-#         id: docker_build_scratch
-#         uses: docker/build-push-action@v4
-#         with:
-#           context: .
-#           platforms: linux/amd64,linux/arm64,linux/386,linux/arm/v7
-#           push: false
-#           tags: username/${{ github.event.repository.name }}:latest,${{ steps.imgtag.outputs.value }}
-#           target: scratch
-#           build-args: 'GIT_DESC=${{ steps.tagger.outputs.tag }}'
+      -
+        name: Build and push scratch image
+        id: docker_build_scratch
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          platforms: linux/amd64,linux/arm64,linux/386,linux/arm/v7
+          push: false
+          tags: username/${{ github.event.repository.name }}:latest,${{ steps.imgtag.outputs.value }}
+          target: scratch
+          build-args: 'GIT_DESC=${{ steps.tagger.outputs.tag }}'
 #       -
 #         name: Build and push Alpine image
 #         id: docker_build_alpine
@@ -67,4 +67,4 @@ jobs:
 #           build-args: 'GIT_DESC=${{ steps.tagger.outputs.tag }}'
       
       - run: echo "username/${{ github.event.repository.name }}:latest,${{ steps.imgtag.outputs.value }}"
-      - run: echo "username/${{ github.event.repository.name }}:latest-alpine,${{ steps.imgtag.outputs.value != ',' && ${{steps.imgtag.outputs.value }}-alpine }"
+      - run: echo "username/${{ github.event.repository.name }}:latest-alpine,${{ steps.imgtag.outputs.value != '' && ',test-alpine' }"
